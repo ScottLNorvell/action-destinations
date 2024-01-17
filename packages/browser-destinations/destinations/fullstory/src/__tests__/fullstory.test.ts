@@ -42,6 +42,14 @@ const example: Subscription[] = [
   }
 ]
 
+beforeEach(() => {
+  delete window._fs_initialized
+  if (window._fs_namespace) {
+    delete window[window._fs_namespace]
+    delete window._fs_namespace
+  }
+})
+
 test('can load fullstory', async () => {
   const [event] = await fullstory({
     orgId: 'thefullstory.com',
