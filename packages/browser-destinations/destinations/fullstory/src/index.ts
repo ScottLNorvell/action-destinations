@@ -4,8 +4,11 @@ import { initFullStory } from './types'
 import { browserDestination } from '@segment/browser-destination-runtime/shim'
 import type { Settings } from './generated-types'
 import trackEvent from './trackEvent'
+import trackEventV2 from './trackEventV2'
 import identifyUser from './identifyUser'
+import identifyUserV2 from './identifyUserV2'
 import viewedPage from './viewedPage'
+import viewedPageV2 from './viewedPageV2'
 import { defaultValues } from '@segment/actions-core'
 
 declare global {
@@ -60,8 +63,11 @@ export const destination: BrowserDestinationDefinition<Settings, FS> = {
   },
   actions: {
     trackEvent,
+    trackEventV2,
     identifyUser,
-    viewedPage
+    identifyUserV2,
+    viewedPage,
+    viewedPageV2
   },
   initialize: async ({ settings }, dependencies) => {
     initFullStory(settings)
