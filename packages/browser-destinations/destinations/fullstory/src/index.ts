@@ -1,6 +1,6 @@
 import type { FS } from './types'
 import type { BrowserDestinationDefinition } from '@segment/browser-destination-runtime/types'
-import { FSPackage } from './types'
+import { initFullStory } from './types'
 import { browserDestination } from '@segment/browser-destination-runtime/shim'
 import type { Settings } from './generated-types'
 import trackEvent from './trackEvent'
@@ -64,7 +64,7 @@ export const destination: BrowserDestinationDefinition<Settings, FS> = {
     viewedPage
   },
   initialize: async ({ settings }, dependencies) => {
-    FSPackage.init(settings)
+    initFullStory(settings)
     await dependencies.resolveWhen(() => Object.prototype.hasOwnProperty.call(window, 'FS'), 100)
     return window.FS
   }
