@@ -1,7 +1,11 @@
 import { Analytics, Context } from '@segment/analytics-next'
 import fullstory from '..'
+import trackEventV2 from '../trackEventV2'
+import identifyUserV2 from '../identifyUserV2'
+import viewedPageV2 from '../viewedPageV2'
 import { FS as FSApi } from '../types'
 import { Subscription } from '@segment/browser-destination-runtime/types'
+import { defaultValues } from '@segment/actions-core/*'
 
 jest.mock('@fullstory/browser', () => ({
   ...jest.requireActual('@fullstory/browser'),
@@ -16,37 +20,21 @@ const example: Subscription[] = [
     name: 'Track Event',
     enabled: true,
     subscribe: 'type = "track"',
-    mapping: {
-      name: {
-        '@path': '$.name'
-      },
-      properties: {
-        '@path': '$.properties'
-      }
-    }
+    mapping: defaultValues(trackEventV2.fields)
   },
   {
     partnerAction: 'identifyUserV2',
     name: 'Identify User',
     enabled: true,
     subscribe: 'type = "identify"',
-    mapping: {
-      anonymousId: {
-        '@path': '$.anonymousId'
-      },
-      userId: {
-        '@path': '$.userId'
-      },
-      email: {
-        '@path': '$.traits.email'
-      },
-      traits: {
-        '@path': '$.traits'
-      },
-      displayName: {
-        '@path': '$.traits.name'
-      }
-    }
+    mapping: defaultValues(identifyUserV2.fields)
+  },
+  {
+    partnerAction: 'viewedPageV2',
+    name: 'Viewed Page',
+    enabled: true,
+    subscribe: 'type = "page"',
+    mapping: defaultValues(viewedPageV2.fields)
   }
 ]
 
@@ -62,7 +50,7 @@ describe('#track', () => {
     await event.track?.(
       new Context({
         type: 'track',
-        name: 'hello!',
+        event: 'hello!',
         properties: {
           banana: '📞'
         }
@@ -209,6 +197,102 @@ describe('#identify', () => {
           email: 'thegoat@world',
           height: '50cm',
           name: 'Hasbulla'
+        }
+      },
+      'segment-browser-actions'
+    )
+  })
+})
+
+describe('#page', () => {
+  it('sends page events to fullstory on "page" (category edition)', async () => {
+    const [, , viewed] = await fullstory({
+      orgId: 'thefullstory.com',
+      subscriptions: example
+    })
+
+    await viewed.load(Context.system(), {} as Analytics)
+
+    await viewed.page?.(
+      new Context({
+        type: 'page',
+        category: 'Walruses',
+        name: 'Walrus Page',
+        properties: {
+          banana: '📞'
+        }
+      })
+    )
+
+    expect(window.FS).toHaveBeenCalledWith(
+      'setProperties',
+      {
+        type: 'page',
+        properties: {
+          pageName: 'Walruses',
+          banana: '📞'
+        }
+      },
+      'segment-browser-actions'
+    )
+  })
+
+  it('sends page events to fullstory on "page" (name edition)', async () => {
+    const [, , viewed] = await fullstory({
+      orgId: 'thefullstory.com',
+      subscriptions: example
+    })
+
+    await viewed.load(Context.system(), {} as Analytics)
+
+    await viewed.page?.(
+      new Context({
+        type: 'page',
+        name: 'Walrus Page',
+        properties: {
+          banana: '📞'
+        }
+      })
+    )
+
+    expect(window.FS).toHaveBeenCalledWith(
+      'setProperties',
+      {
+        type: 'page',
+        properties: {
+          pageName: 'Walrus Page',
+          banana: '📞'
+        }
+      },
+      'segment-browser-actions'
+    )
+  })
+
+  it('sends page events to fullstory on "page" (no pageName edition)', async () => {
+    const [, , viewed] = await fullstory({
+      orgId: 'thefullstory.com',
+      subscriptions: example
+    })
+
+    await viewed.load(Context.system(), {} as Analytics)
+
+    await viewed.page?.(
+      new Context({
+        type: 'page',
+        properties: {
+          banana: '📞',
+          keys: '🗝🔑'
+        }
+      })
+    )
+
+    expect(window.FS).toHaveBeenCalledWith(
+      'setProperties',
+      {
+        type: 'page',
+        properties: {
+          banana: '📞',
+          keys: '🗝🔑'
         }
       },
       'segment-browser-actions'

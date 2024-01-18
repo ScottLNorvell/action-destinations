@@ -27,15 +27,22 @@ export const destination: BrowserDestinationDefinition<Settings, FS> = {
     {
       name: 'Track Event',
       subscribe: 'type = "track"',
-      partnerAction: 'trackEvent',
-      mapping: defaultValues(trackEvent.fields),
+      partnerAction: 'trackEventV2',
+      mapping: defaultValues(trackEventV2.fields),
       type: 'automatic'
     },
     {
       name: 'Identify User',
       subscribe: 'type = "identify"',
-      partnerAction: 'identifyUser',
-      mapping: defaultValues(identifyUser.fields),
+      partnerAction: 'identifyUserV2',
+      mapping: defaultValues(identifyUserV2.fields),
+      type: 'automatic'
+    },
+    {
+      name: 'Viewed Page',
+      subscribe: 'type = "page"',
+      partnerAction: 'viewedPageV2',
+      mapping: defaultValues(viewedPageV2.fields),
       type: 'automatic'
     }
   ],
