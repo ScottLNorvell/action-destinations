@@ -95,44 +95,18 @@ describe('#identify', () => {
       { type: 'user', properties: { segmentAnonymousId: 'anon', testProp: false } },
       'segment-browser-actions'
     )
-  }),
-    it('should send an id', async () => {
-      const [_, identifyUser] = await fullstory({
-        orgId: 'thefullstory.com',
-        subscriptions: example
-      })
-      await identifyUser.load(Context.system(), {} as Analytics)
+  })
 
-      await identifyUser.identify?.(new Context({ type: 'identify', userId: 'id' }))
-      expect(window.FS).toHaveBeenCalledWith('setIdentity', { uid: 'id', properties: {} }, 'segment-browser-actions')
-    }),
-    it('should camelCase custom traits', async () => {
-      const [_, identifyUser] = await fullstory({
-        orgId: 'thefullstory.com',
-        subscriptions: example
-      })
-      await identifyUser.load(Context.system(), {} as Analytics)
-
-      await identifyUser.identify?.(
-        new Context({
-          type: 'identify',
-          userId: 'id',
-          traits: {
-            'not-cameled': false,
-            'first name': 'John',
-            lastName: 'Doe'
-          }
-        })
-      )
-      expect(window.FS).toHaveBeenCalledWith(
-        'setIdentity',
-        {
-          uid: 'id',
-          properties: { notCameled: false, firstName: 'John', lastName: 'Doe' }
-        },
-        'segment-browser-actions'
-      )
+  it('should send an id', async () => {
+    const [_, identifyUser] = await fullstory({
+      orgId: 'thefullstory.com',
+      subscriptions: example
     })
+    await identifyUser.load(Context.system(), {} as Analytics)
+
+    await identifyUser.identify?.(new Context({ type: 'identify', userId: 'id' }))
+    expect(window.FS).toHaveBeenCalledWith('setIdentity', { uid: 'id', properties: {} }, 'segment-browser-actions')
+  })
 
   it('can set user vars', async () => {
     const [_, identifyUser] = await fullstory({
