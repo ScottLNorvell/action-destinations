@@ -6,7 +6,7 @@ import { segmentEventSource } from '..'
 
 // Change from unknown to the partner SDK types
 const action: BrowserActionDefinition<Settings, FS, Payload> = {
-  title: 'Identify User',
+  title: 'Identify User V2',
   description: 'Sets user identity variables',
   platform: 'web',
   defaultSubscription: 'type = "identify"',

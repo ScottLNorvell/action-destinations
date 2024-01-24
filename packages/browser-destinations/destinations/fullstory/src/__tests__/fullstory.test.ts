@@ -6,6 +6,8 @@ import viewedPage from '../viewedPage'
 import { Subscription } from '@segment/browser-destination-runtime/types'
 import { defaultValues } from '@segment/actions-core/*'
 
+const FakeOrgId = 'asdf-qwer'
+
 const example: Subscription[] = [
   {
     partnerAction: 'trackEvent',
@@ -41,7 +43,7 @@ beforeEach(() => {
 describe('#track', () => {
   it('sends record events to fullstory on "event"', async () => {
     const [event] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -71,7 +73,7 @@ describe('#track', () => {
 describe('#identify', () => {
   it('should default to anonymousId', async () => {
     const [_, identify] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -95,7 +97,7 @@ describe('#identify', () => {
   }),
     it('should send an id', async () => {
       const [_, identifyUser] = await fullstory({
-        orgId: 'thefullstory.com',
+        orgId: FakeOrgId,
         subscriptions: example
       })
       await identifyUser.load(Context.system(), {} as Analytics)
@@ -106,7 +108,7 @@ describe('#identify', () => {
     }),
     it('should camelCase custom traits', async () => {
       const [_, identify] = await fullstory({
-        orgId: 'thefullstory.com',
+        orgId: FakeOrgId,
         subscriptions: example
       })
       await identify.load(Context.system(), {} as Analytics)
@@ -132,7 +134,7 @@ describe('#identify', () => {
 
   it('can set user vars', async () => {
     const [_, identify] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -163,7 +165,7 @@ describe('#identify', () => {
 
   it('should set displayName correctly', async () => {
     const [_, identify] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -198,7 +200,7 @@ describe('#identify', () => {
 describe('#page', () => {
   it('sends page events to fullstory on "page" (category edition)', async () => {
     const [, , viewed] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -228,7 +230,7 @@ describe('#page', () => {
 
   it('sends page events to fullstory on "page" (name edition)', async () => {
     const [, , viewed] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -255,9 +257,9 @@ describe('#page', () => {
     )
   })
 
-  it('sends page events to fullstory on "page" (no pageNaem edition)', async () => {
+  it('sends page events to fullstory on "page" (no pageName edition)', async () => {
     const [, , viewed] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 

@@ -5,7 +5,7 @@ import type { FS } from '../types'
 import { segmentEventSource } from '..'
 
 const action: BrowserActionDefinition<Settings, FS, Payload> = {
-  title: 'Viewed Page',
+  title: 'Viewed Page V2',
   description: 'Sets page properties events',
   defaultSubscription: 'type = "page"',
   platform: 'web',

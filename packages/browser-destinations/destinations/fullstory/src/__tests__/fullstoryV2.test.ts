@@ -14,6 +14,8 @@ jest.mock('@fullstory/browser', () => ({
   }
 }))
 
+const FakeOrgId = 'asdf-qwer'
+
 const example: Subscription[] = [
   {
     partnerAction: 'trackEventV2',
@@ -41,7 +43,7 @@ const example: Subscription[] = [
 describe('#track', () => {
   it('sends record events to fullstory on "event"', async () => {
     const [event] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -73,7 +75,7 @@ describe('#track', () => {
 describe('#identify', () => {
   it('should default to anonymousId', async () => {
     const [_, identifyUser] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -99,7 +101,7 @@ describe('#identify', () => {
 
   it('should send an id', async () => {
     const [_, identifyUser] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
     await identifyUser.load(Context.system(), {} as Analytics)
@@ -110,7 +112,7 @@ describe('#identify', () => {
 
   it('can set user vars', async () => {
     const [_, identifyUser] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -144,7 +146,7 @@ describe('#identify', () => {
 
   it('should set displayName correctly', async () => {
     const [_, identifyUser] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -181,7 +183,7 @@ describe('#identify', () => {
 describe('#page', () => {
   it('sends page events to fullstory on "page" (category edition)', async () => {
     const [, , viewed] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -213,7 +215,7 @@ describe('#page', () => {
 
   it('sends page events to fullstory on "page" (name edition)', async () => {
     const [, , viewed] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 
@@ -244,7 +246,7 @@ describe('#page', () => {
 
   it('sends page events to fullstory on "page" (no pageName edition)', async () => {
     const [, , viewed] = await fullstory({
-      orgId: 'thefullstory.com',
+      orgId: FakeOrgId,
       subscriptions: example
     })
 

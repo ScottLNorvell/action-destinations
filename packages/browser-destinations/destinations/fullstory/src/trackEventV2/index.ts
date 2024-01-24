@@ -5,7 +5,7 @@ import type { FS } from '../types'
 import { segmentEventSource } from '..'
 
 const action: BrowserActionDefinition<Settings, FS, Payload> = {
-  title: 'Track Event',
+  title: 'Track Event V2',
   description: 'Track events',
   platform: 'web',
   defaultSubscription: 'type = "track"',
